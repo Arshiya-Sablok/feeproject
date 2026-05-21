@@ -1,0 +1,304 @@
+
+/* --- 7. RESTAURANTS SECTION --- */
+.restaurants-section, .trending-section {
+    padding: 40px 24px;
+}
+.restaurant-grid, .dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 32px;
+}
+
+.restaurant-card {
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--trans-normal);
+    border: 1px solid var(--border-color);
+}
+.restaurant-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.rest-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+.rest-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--trans-slow);
+}
+.restaurant-card:hover .rest-image img {
+    transform: scale(1.05);
+}
+
+.promoted-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--primary-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.view-menu-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.25rem;
+    opacity: 0;
+    transition: opacity var(--trans-fast);
+}
+.restaurant-card:hover .view-menu-overlay {
+    opacity: 1;
+}
+
+.rest-details {
+    padding: 20px;
+}
+.rest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.rest-header h3 {
+    font-size: 1.25rem;
+}
+.rating {
+    background: var(--success-color);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.cuisines {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rest-meta {
+    display: flex;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+.rest-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* --- 8. TRENDING DISHES --- */
+.dish-card {
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--trans-normal);
+    border: 1px solid var(--border-color);
+}
+.dish-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+.dish-image {
+    position: relative;
+    height: 220px;
+}
+.dish-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.type-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+}
+.type-icon.veg {
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+.type-icon.non-veg {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+.dish-info {
+    padding: 20px;
+}
+.dish-header h4 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.restaurant-name {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.add-to-cart-btn {
+    background: var(--surface-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--trans-fast);
+}
+.add-to-cart-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* --- 9. QUICK ORDER --- */
+.quick-order-section {
+    background: var(--primary-color);
+    padding: 60px 0;
+    color: white;
+    margin: 40px 0;
+}
+.quick-order-section .section-header h2::after {
+    background: white;
+}
+.quick-order-carousel {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+}
+.quick-order-carousel::-webkit-scrollbar {
+    display: none;
+}
+.quick-item {
+    min-width: 140px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+    transition: transform var(--trans-fast);
+}
+.quick-item:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-5px);
+}
+.quick-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 12px;
+    border: 3px solid white;
+}
+.q-info h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+.q-info span {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+.add-quick-btn {
+    background: white;
+    color: var(--primary-color);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: transform var(--trans-fast);
+}
+.add-quick-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- 10. EXPLORE CUISINES --- */
+.cuisine-section {
+    padding: 40px 24px;
+}
+.cuisine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+}
+.cuisine-card {
+    height: 160px;
+    border-radius: var(--radius-md);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--trans-normal);
+}
+.cuisine-card:hover {
+    transform: scale(1.03);
+}
+.cuisine-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+}
+.cuisine-card a {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    color: white;
+    z-index: 1;
+}
+.cuisine-card h3 {
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+

@@ -1,0 +1,355 @@
+
+/* --- 4. HERO BANNER --- */
+.hero-banner {
+    position: relative;
+    padding: 160px 24px 100px;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.hero-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7));
+    z-index: -1;
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    width: 100%;
+    animation: fadeUp 1s ease forwards;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 24px;
+}
+.hero-content .highlight {
+    color: var(--primary-color);
+}
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+    color: rgba(255,255,255,0.9);
+}
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 64px;
+}
+
+.sliding-promo {
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 0;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.promo-track {
+    display: inline-flex;
+    gap: 32px;
+    padding-left: 100%;
+    animation: slideLeft 20s linear infinite;
+    color: var(--warning-color);
+    font-weight: 500;
+}
+
+/* --- 5. CATEGORIES SECTION --- */
+.categories-section {
+    padding-top: 80px;
+    padding-bottom: 40px;
+}
+.categories-grid {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    scrollbar-width: none;
+}
+.categories-grid::-webkit-scrollbar {
+    display: none;
+}
+.category-card {
+    min-width: 120px;
+    background: var(--surface-color);
+    padding: 24px 16px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--trans-normal);
+    border: 1px solid var(--border-color);
+}
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+.cat-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    transition: transform var(--trans-fast);
+}
+.category-card:hover .cat-icon {
+    transform: scale(1.1);
+}
+.category-card span {
+    font-weight: 600;
+}
+.store-99 {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+.store-99:hover {
+    background: var(--primary-hover);
+}
+
+/* --- 6. OFFERS SECTION --- */
+.offers-section {
+    padding: 40px 24px;
+}
+.offer-cards-scroll {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 24px;
+    scrollbar-width: thin;
+}
+.offer-card {
+    min-width: 320px;
+    height: 180px;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--trans-normal);
+}
+.offer-card:hover {
+    transform: scale(1.02);
+}
+.orange-gradient { background: var(--orange-grad); }
+.blue-gradient { background: var(--blue-grad); }
+.green-gradient { background: var(--green-grad); }
+
+.offer-info {
+    z-index: 2;
+    max-width: 60%;
+}
+.offer-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+.offer-info p {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+.coupon-code {
+    background: rgba(0,0,0,0.2);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+.offer-card img {
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 60%;
+    height: 120%;
+    object-fit: cover;
+    z-index: 1;
+    mask-image: linear-gradient(to right, transparent, black 15%);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%);
+}
+
+/* --- 11. HOW IT WORKS --- */
+.how-it-works-section {
+    padding: 80px 24px;
+    background: var(--surface-color);
+}
+.steps-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 40px;
+}
+.step-box {
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+}
+.step-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 20px rgba(255, 126, 95, 0.3);
+}
+.step-box h4 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+.step-box p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+.step-arrow {
+    font-size: 1.5rem;
+    color: var(--border-color);
+}
+
+/* --- 12. CUSTOMER REVIEWS --- */
+.reviews-section {
+    padding: 60px 24px;
+}
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+.review-card {
+    background: var(--surface-color);
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+.stars {
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+}
+.review-card p {
+    font-size: 1.05rem;
+    font-style: italic;
+    margin-bottom: 24px;
+    line-height: 1.8;
+}
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.customer-avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--orange-grad);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.customer-info span {
+    font-weight: 600;
+}
+
+/* --- 13. APP PROMOTION --- */
+.app-promotion {
+    padding: 80px 24px;
+    background: var(--surface-color);
+    overflow: hidden;
+}
+.app-promo-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary-color);
+    border-radius: var(--radius-lg);
+    padding: 0 60px;
+    color: white;
+}
+.app-promo-content {
+    flex: 1;
+    padding: 60px 0;
+    max-width: 500px;
+}
+.app-promo-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+}
+.app-promo-content p {
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+    opacity: 0.9;
+}
+.app-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+/* --- 14. NEWSLETTER --- */
+.newsletter-section {
+    padding: 60px 24px;
+}
+.banner-inner {
+    background: var(--blue-grad);
+    border-radius: var(--radius-lg);
+    padding: 60px 32px;
+    text-align: center;
+    color: white;
+}
+.banner-inner h2 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+.banner-inner p {
+    margin-bottom: 32px;
+    opacity: 0.9;
+}
+.newsletter-form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 12px;
+}
+.newsletter-form input {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: var(--radius-full);
+    border: none;
+    font-family: inherit;
+    font-size: 1rem;
+}
+

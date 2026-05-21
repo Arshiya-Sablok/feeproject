@@ -1,0 +1,51 @@
+
+@import url("base.css");
+@import url("layout.css");
+@import url("components.css");
+@import url("home.css");
+
+/* Modal Utilities */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.modal-content {
+    background: var(--surface-color);
+    width: 100%;
+    max-width: 500px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    animation: fadeUp 0.3s ease;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(0,0,0,0.02);
+}
+.modal-header h2 { font-size: 1.5rem; margin: 0; }
+.close-modal {
+    background: none; border: none; font-size: 2rem;
+    color: var(--text-secondary); cursor: pointer; transition: 0.2s;
+}
+.close-modal:hover { color: var(--danger-color); }
+.modal-body { padding: 32px; }
+.star-rating i {
+    font-size: 2rem;
+    color: #ffd700;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+.star-rating i:hover { transform: scale(1.1); }
