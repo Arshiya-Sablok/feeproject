@@ -1,0 +1,134 @@
+<!-- offers.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Offers & Coupons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-header { background: var(--blue-grad); padding: 120px 24px 60px; color: white; text-align: center; }
+        .page-header h1 { font-size: 3rem; margin-bottom: 16px; }
+        .offers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px; padding: 60px 0; }
+        .offer-card { 
+            position: relative; 
+            height: 240px; 
+            border-radius: var(--radius-md); 
+            overflow: hidden; 
+            display: flex; 
+            align-items: center; 
+            box-shadow: var(--shadow-md); 
+            border: none; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+        }
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        .coupon-btn { 
+            background: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: var(--radius-full); 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin-top: 12px; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .coupon-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .coupon-btn:active { 
+            transform: scale(0.95); 
+        }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html" style="color: var(--primary-color);">Offers</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Best Offers & Coupons 🏷️</h1>
+        <p>Save big on your favorite meals</p>
+    </div>
+
+    <div class="container">
+        <div class="offers-grid">
+            <!-- Card 1 -->
+            <div class="offer-card">
+                <img src="photos/50%25 OFF.jpeg" alt="50% OFF" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, rgba(229, 45, 39, 0.95) 0%, rgba(0, 0, 0, 0.4) 100%); z-index:2;"></div>
+                <div class="offer-info" style="position:relative; z-index:3; padding:32px; color:white; display:flex; flex-direction:column; justify-content:center; height:100%; width:100%;">
+                    <h3 style="font-size:2rem; font-weight:800; margin-bottom:8px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">50% OFF</h3>
+                    <p style="font-size:1.1rem; font-weight:500; margin-bottom:12px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">Up to ₹100 on first order</p>
+                    <div>
+                        <button class="coupon-btn" onclick="navigator.clipboard.writeText('FOOD50'); showToast('Coupon copied!');" style="color:#e52d27;"><i class="fa-regular fa-copy"></i> FOOD50</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="offer-card">
+                <img src="photos/FREE DELIVERY.jpeg" alt="Free Delivery" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, rgba(41, 128, 185, 0.95) 0%, rgba(0, 0, 0, 0.4) 100%); z-index:2;"></div>
+                <div class="offer-info" style="position:relative; z-index:3; padding:32px; color:white; display:flex; flex-direction:column; justify-content:center; height:100%; width:100%;">
+                    <h3 style="font-size:2rem; font-weight:800; margin-bottom:8px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">FREE DELIVERY</h3>
+                    <p style="font-size:1.1rem; font-weight:500; margin-bottom:12px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">On orders above ₹199</p>
+                    <div>
+                        <button class="coupon-btn" onclick="navigator.clipboard.writeText('FREEDEL'); showToast('Coupon copied!');" style="color:#2980b9;"><i class="fa-regular fa-copy"></i> FREEDEL</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="offer-card">
+                <img src="photos/FLAT 20%25 OFF.jpeg" alt="Flat 20% Off" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, rgba(39, 174, 96, 0.95) 0%, rgba(0, 0, 0, 0.4) 100%); z-index:2;"></div>
+                <div class="offer-info" style="position:relative; z-index:3; padding:32px; color:white; display:flex; flex-direction:column; justify-content:center; height:100%; width:100%;">
+                    <h3 style="font-size:2rem; font-weight:800; margin-bottom:8px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">FLAT 20% OFF</h3>
+                    <p style="font-size:1.1rem; font-weight:500; margin-bottom:12px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">On select restaurants</p>
+                    <div>
+                        <button class="coupon-btn" onclick="navigator.clipboard.writeText('PARTY20'); showToast('Coupon copied!');" style="color:#27ae60;"><i class="fa-regular fa-copy"></i> PARTY20</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="offer-card">
+                <img src="photos/Margherita Pizza.jpeg" alt="BOGO Pizza" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:1;">
+                <div style="position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(135deg, rgba(142, 68, 173, 0.95) 0%, rgba(0, 0, 0, 0.4) 100%); z-index:2;"></div>
+                <div class="offer-info" style="position:relative; z-index:3; padding:32px; color:white; display:flex; flex-direction:column; justify-content:center; height:100%; width:100%;">
+                    <h3 style="font-size:2rem; font-weight:800; margin-bottom:8px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">BUY 1 GET 1</h3>
+                    <p style="font-size:1.1rem; font-weight:500; margin-bottom:12px; text-shadow:1px 1px 3px rgba(0,0,0,0.5);">On Pizzas</p>
+                    <div>
+                        <button class="coupon-btn" onclick="navigator.clipboard.writeText('BOGO'); showToast('Coupon copied!');" style="color:#8e44ad;"><i class="fa-regular fa-copy"></i> BOGO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

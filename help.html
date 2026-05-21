@@ -1,0 +1,326 @@
+<!-- help.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Help & Support</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .help-page { padding: 120px 24px 60px; max-width: 1000px; margin: 0 auto; }
+        
+        .help-header { text-align: center; margin-bottom: 40px; }
+        .help-header h1 { font-size: 3rem; margin-bottom: 16px; color: var(--text-primary); }
+        .help-header p { color: var(--text-secondary); font-size: 1.1rem; }
+        
+        /* Grid Layout */
+        .help-grid { display: grid; grid-template-columns: 250px 1fr; gap: 40px; }
+        @media(max-width: 768px) { .help-grid { grid-template-columns: 1fr; } }
+        
+        /* Sidebar Navigation */
+        .help-nav { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 100px; }
+        .help-nav-btn { text-align: left; background: var(--surface-color); border: 1px solid var(--border-color); padding: 16px 20px; border-radius: var(--radius-sm); font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+        .help-nav-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        .help-nav-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        /* Content Sections */
+        .help-section { display: none; background: var(--surface-color); padding: 32px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); animation: fadeUp 0.3s ease; }
+        .help-section.active { display: block; }
+        .help-section h2 { margin-bottom: 24px; font-size: 1.8rem; color: var(--text-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 12px; }
+        
+        /* Typography Content */
+        .content-text p { margin-bottom: 16px; line-height: 1.6; color: var(--text-secondary); }
+        .content-text h3 { margin: 24px 0 12px; font-size: 1.2rem; color: var(--text-primary); }
+        .content-text ul { margin-bottom: 16px; padding-left: 20px; color: var(--text-secondary); line-height: 1.6; }
+        
+        /* FAQ Accordion */
+        .faq-item { margin-bottom: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; }
+        .faq-question { padding: 16px 24px; background: rgba(0,0,0,0.02); font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); user-select: none; transition: background 0.2s; }
+        .faq-question:hover { background: rgba(0,0,0,0.05); }
+        .faq-question i { transition: transform 0.3s; }
+        .faq-item.open .faq-question i { transform: rotate(180deg); color: var(--primary-color); }
+        .faq-answer { padding: 0 24px; max-height: 0; overflow: hidden; transition: all 0.3s ease; color: var(--text-secondary); line-height: 1.6; }
+        .faq-item.open .faq-answer { padding: 16px 24px; max-height: 500px; border-top: 1px solid var(--border-color); }
+        
+        /* Floating Chatbot */
+        .chatbot-widget { position: fixed; bottom: 30px; right: 30px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; }
+        .chat-toggleBtn { width: 60px; height: 60px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; cursor: pointer; box-shadow: var(--shadow-lg); transition: transform 0.2s; border: none; outline: none; }
+        .chat-toggleBtn:hover { transform: scale(1.1); }
+        
+        .chat-window { width: 350px; background: var(--surface-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); overflow: hidden; display: none; flex-direction: column; margin-bottom: 16px; transform-origin: bottom right; animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes scaleUp { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        .chat-header { background: var(--primary-color); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .chat-header i { cursor: pointer; }
+        .chat-body { height: 350px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: rgba(0,0,0,0.01); }
+        
+        .chat-msg { max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 0.95rem; line-height: 1.4; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { 0% { transform: translateY(10px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        
+        .msg-bot { background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-primary); border-bottom-left-radius: 4px; align-self: flex-start; }
+        .msg-user { background: var(--primary-color); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+        
+        .chat-input { display: flex; padding: 12px; background: var(--surface-color); border-top: 1px solid var(--border-color); }
+        .chat-input input { flex: 1; padding: 10px 16px; border-radius: var(--radius-full); border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); outline: none; transition: border 0.2s; }
+        .chat-input input:focus { border-color: var(--primary-color); }
+        .chat-submitBtn { background: none; border: none; color: var(--primary-color); font-size: 1.2rem; margin-left: 12px; cursor: pointer; transition: transform 0.2s; }
+        .chat-submitBtn:hover { transform: scale(1.1); }
+        
+        /* Auto suggested quick replies */
+        .chat-quick-replies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+        .chat-quick-btn { background: rgba(255,126,95,0.1); border: 1px solid rgba(255,126,95,0.3); color: var(--primary-color); padding: 6px 12px; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+        .chat-quick-btn:hover { background: rgba(255,126,95,0.2); }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html">Offers</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>
+                <div class="cart-icon-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i><span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container help-page">
+        <div class="help-header">
+            <h1>Help & Support</h1>
+            <p>We are here to help you get the best experience</p>
+        </div>
+
+        <div class="help-grid">
+            <div class="help-nav">
+                <button class="help-nav-btn active" onclick="switchTab(this, 'faq')"><i class="fa-solid fa-circle-question"></i> FAQs</button>
+                <button class="help-nav-btn" onclick="switchTab(this, 'terms')"><i class="fa-solid fa-file-contract"></i> Terms of Use</button>
+                <button class="help-nav-btn" onclick="switchTab(this, 'privacy')"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</button>
+                <button class="help-nav-btn" onclick="switchTab(this, 'refund')"><i class="fa-solid fa-money-bill-transfer"></i> Cancellation/Refunds</button>
+            </div>
+
+            <div class="help-content-area">
+                
+                <!-- FAQ SECTION -->
+                <div id="faq" class="help-section active">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>I want to cancel my order</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                We'll do our best to help you cancel your order. Please note, orders can only be cancelled before they have been accepted by the restaurant. You can check the status on the generic Tracking page.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>How do I apply a coupon code?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                In your Cart, below the Cart items, you'll see a 'Bill Details' section. Enter a valid coupon code (like WELCOME50) in the input box and click Apply. 
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>Do you charge for delivery?</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Yes, we charge a nominal ₹40 delivery fee for most areas and a fixed ₹5 platform fee, but we occasionally provide free delivery coupons!
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>My payment failed but money was deducted</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                Don't worry! Sometimes bank servers face glitches. Any deducted amount for a failed transaction will automatically hit your account within 5-7 business days.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TERMS SECTION -->
+                <div id="terms" class="help-section">
+                    <h2>Terms of Use</h2>
+                    <div class="content-text">
+                        <p>These Terms of Use ("Terms") govern your access to and use of our Website. By accessing or using the food ordering platform, you signify your agreement to these Terms.</p>
+                        <h3>User Accounts</h3>
+                        <p>When you register for an account, you must provide accurate, current, and complete information. You are solely responsible for maintaining the confidentiality of your account credentials.</p>
+                        <h3>Pricing and Availability</h3>
+                        <p>All prices and availability of menu items are supplied directly by the restaurant partners and are subject to change without notice.</p>
+                        <h3>Prohibited Conduct</h3>
+                        <p>You agree not to engage in any prohibited conduct, including but not limited to submitting false orders, abusive language towards delivery partners, and submitting fraudulent payments.</p>
+                    </div>
+                </div>
+
+                <!-- PRIVACY SECTION -->
+                <div id="privacy" class="help-section">
+                    <h2>Privacy Policy</h2>
+                    <div class="content-text">
+                        <p>We respect your privacy and are committed to protecting it through our compliance with this policy.</p>
+                        <h3>Information We Collect</h3>
+                        <ul>
+                            <li><strong>Personal Information:</strong> Name, email address, postal address, phone number.</li>
+                            <li><strong>Financial Information:</strong> Credit/Debit card metadata or UPI identifiers, managed securely by third party payment providers.</li>
+                        </ul>
+                        <h3>How We Use Your Information</h3>
+                        <p>We use your information to facilitate your orders, communicate with you about your account, process payments securely, and analyze site usage for technical improvements.</p>
+                        <h3>Data Sharing</h3>
+                        <p>We only share your delivery details with our restaurant partners and delivery executives to ensure your food reaches you swiftly and safely.</p>
+                    </div>
+                </div>
+                
+                <!-- REFUND SECTION -->
+                <div id="refund" class="help-section">
+                    <h2>Cancellation & Refund Policy</h2>
+                    <div class="content-text">
+                        <p>We understand sometimes you might change your mind. Here is our policy regarding ongoing order cancellations and payment refunds.</p>
+                        <h3>Cancellation Rules</h3>
+                        <ul>
+                            <li>You can cancel your order within 1 minute of placing it without any cancellation fee.</li>
+                            <li>If the restaurant has already started preparing your food, the order cannot be cancelled and no refund will be issued.</li>
+                            <li>If the delivery partner is at your doorstep but you are unavailable, the order is cancelled with a 100% cancellation fee.</li>
+                        </ul>
+                        <h3>Refund Process</h3>
+                        <p>If your order is cancelled by us due to an unavailable item or unserviceable location, we will issue a full 100% refund. The refund process generally takes 3-5 business days to surface in your original payment method depending on your bank.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Chatbot Widget -->
+    <div class="chatbot-widget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span><i class="fa-solid fa-robot"></i> Foodies Assistant</span>
+                <i class="fa-solid fa-times" onclick="toggleChat()"></i>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-msg msg-bot">Hi there! 👋 How can I assist you with your Foodies experience today?</div>
+                <div class="chat-quick-replies" id="chatQuickReplies">
+                    <button class="chat-quick-btn" onclick="sendUserMsg('Where is my order?')">Where is my order?</button>
+                    <button class="chat-quick-btn" onclick="sendUserMsg('Cancel order')">Cancel order</button>
+                    <button class="chat-quick-btn" onclick="sendUserMsg('Offer not working')">Offer not working</button>
+                </div>
+            </div>
+            <form class="chat-input" onsubmit="handleChatSubmit(event)">
+                <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+                <button type="submit" class="chat-submitBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <button class="chat-toggleBtn" onclick="toggleChat()"><i class="fa-solid fa-comment-dots"></i></button>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    
+    <script>
+        // Layout Toggle Script
+        function switchTab(btn, sectionId) {
+            // Update buttons
+            document.querySelectorAll('.help-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update sections
+            document.querySelectorAll('.help-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+        
+        // FAQ Accordion Script
+        function toggleFaq(btn) {
+            const parent = btn.parentElement;
+            if(parent.classList.contains('open')) {
+                parent.classList.remove('open');
+            } else {
+                // close all others?
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                parent.classList.add('open');
+            }
+        }
+        
+        // Chatbot Script
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatWindow.style.display === 'flex') {
+                chatWindow.style.display = 'none';
+            } else {
+                chatWindow.style.display = 'flex';
+                // Trigger auto focus
+                setTimeout(() => document.getElementById('chatInput').focus(), 100);
+            }
+        }
+        
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const inputField = document.getElementById('chatInput');
+            const msg = inputField.value.trim();
+            if(!msg) return;
+            
+            sendUserMsg(msg);
+            inputField.value = '';
+        }
+        
+        function sendUserMsg(msg) {
+            const chatBody = document.getElementById('chatBody');
+            
+            // Remove quick replies temporarily
+            const quickReplies = document.getElementById('chatQuickReplies');
+            if(quickReplies) quickReplies.style.display = 'none';
+            
+            // Append User message
+            chatBody.innerHTML += `<div class="chat-msg msg-user">${msg}</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Simulate bot processing delay
+            setTimeout(() => {
+                let botRes = getBotResponse(msg.toLowerCase());
+                chatBody.innerHTML += `<div class="chat-msg msg-bot">${botRes}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+                
+                // Show quick replies back if we want to
+                if(quickReplies) {
+                    chatBody.appendChild(quickReplies); // move down
+                    quickReplies.style.display = 'flex';
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }
+                
+            }, 800);
+        }
+        
+        function getBotResponse(msg) {
+            if(msg.includes('order') && (msg.includes('where') || msg.includes('track'))) {
+                return "You can track your active orders by clicking on your Profile/Orders in the top navigation bar.";
+            } else if (msg.includes('cancel')) {
+                return "To cancel an order, navigate to the Order Details page. Only orders that haven't been picked up by a cook can be cancelled!";
+            } else if (msg.includes('offer') || msg.includes('coupon') || msg.includes('discount')) {
+                return "Coupons have minimum order values. Head over to our Offers page in the navigation bar to see available discounts.";
+            } else if (msg.includes('hello') || msg.includes('hi ')) {
+                return "Hello! How can I help you regarding your Foodies experience?";
+            } else {
+                return "I'm still learning! If you have urgent requests, you can email us at support@foodies.com or call 1800-FOODIES.";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Login / Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-color); padding: 40px 24px; }
+        .login-card { background: var(--surface-color); border-radius: var(--radius-lg); padding: 40px; width: 100%; max-width: 450px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); text-align: center; }
+        .login-card .logo { justify-content: center; margin-bottom: 32px; font-size: 2rem; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); }
+        .form-group input { width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 1rem; background: var(--bg-color); color: var(--text-primary); }
+        .form-group input:focus { outline: none; border-color: var(--primary-color); }
+        .login-btn-submit { width: 100%; margin-top: 10px; }
+        .divider { display: flex; align-items: center; margin: 24px 0; color: var(--text-secondary); }
+        .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+        .divider span { padding: 0 16px; font-size: 0.9rem; }
+        .social-login { display: flex; gap: 16px; }
+        .social-btn { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: var(--surface-color); color: var(--text-primary); font-weight: 600; transition: background 0.2s; }
+        .social-btn:hover { background: var(--bg-color); }
+        .back-home { margin-top: 24px; display: inline-block; color: var(--text-secondary); font-size: 0.9rem; }
+        .back-home:hover { color: var(--primary-color); }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Inline script to apply user's dark mode preference to body immediately so no flash happens -->
+    <script>if (localStorage.getItem('theme') !== 'dark') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <div class="login-page">
+        <div class="login-card">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <h2 style="margin-bottom: 8px; color: var(--text-primary);">Welcome Back</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 32px;">Please enter your details to continue.</p>
+            
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" placeholder="Write Your Name" required>
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Email Address (Optional)</label>
+                        <input type="email" id="regEmail" placeholder="xyz@gmail.com">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Phone Number</label>
+                        <input type="tel" id="regPhone" placeholder="xxxxxxxxxx" pattern="[0-9]{10}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address</label>
+                    <input type="text" id="regAddress" placeholder="House/Flat No., Street, Area" required>
+                </div>
+                <div class="form-group">
+                    <label>Pincode</label>
+                    <input type="text" id="regPincode" placeholder="110001" required>
+                </div>
+                <button type="submit" class="btn btn-primary login-btn-submit">Continue to Order</button>
+            </form>
+            
+            <script src="js/auth.js"></script>
+            <script>
+                function handleAuth(e) {
+                    e.preventDefault();
+                    const name = document.getElementById('regName').value;
+                    const email = document.getElementById('regEmail').value;
+                    const phone = document.getElementById('regPhone').value;
+                    const address = document.getElementById('regAddress').value;
+                    const pincode = document.getElementById('regPincode').value;
+
+                    authSystem.register(name, phone, address, pincode, email);
+                    
+                    // Redirect back to previous or home
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirect = urlParams.get('redirect');
+                    if (redirect) {
+                        window.location.href = redirect;
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }
+            </script>
+
+            <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

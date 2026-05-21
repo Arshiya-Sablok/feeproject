@@ -1,0 +1,130 @@
+<!-- dishes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Dishes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-header { background: var(--primary-color); padding: 120px 24px 60px; color: white; text-align: center; }
+        .page-header h1 { font-size: 3rem; margin-bottom: 16px; text-transform: capitalize; }
+        
+        .filter-tabs { display: flex; gap: 16px; overflow-x: auto; padding: 24px 0; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); }
+        .filter-tabs a { padding: 8px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-full); background: var(--surface-color); cursor: pointer; white-space: nowrap; font-weight: 500; transition: all 0.2s; color: var(--text-primary); }
+        .filter-tabs a:hover, .filter-tabs a.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search a restaurant or dish...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html">Offers</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>
+                <div class="cart-icon-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i><span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1 id="categoryTitle">All Dishes</h1>
+        <p>Explore mouth-watering options directly</p>
+    </div>
+
+    <div class="container" style="padding-bottom: 80px;">
+        <div class="filter-tabs">
+            <a href="dishes.html" id="tab-all" class="active">All</a>
+            <a href="dishes.html?cat=pizza" id="tab-pizza">Pizza</a>
+            <a href="dishes.html?cat=burger" id="tab-burger">Burger</a>
+            <a href="dishes.html?cat=chinese" id="tab-chinese">Chinese</a>
+            <a href="dishes.html?cat=indian" id="tab-indian">Indian</a>
+            <a href="dishes.html?cat=healthy" id="tab-healthy">Healthy</a>
+            <a href="dishes.html?cat=desserts" id="tab-desserts">Desserts</a>
+            <a href="dishes.html?cat=drinks" id="tab-drinks">Drinks</a>
+        </div>
+
+        <div class="dishes-grid" id="dishesContainer" style="padding-top: 24px;">
+            <!-- Populated by JS -->
+            <p>Loading dishes...</p>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/search.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('cat');
+            
+            const container = document.getElementById('dishesContainer');
+            const title = document.getElementById('categoryTitle');
+            
+            // Highlight correct tab
+            document.querySelectorAll('.filter-tabs a').forEach(a => a.classList.remove('active'));
+            if(cat) {
+                const tab = document.getElementById('tab-' + cat);
+                if(tab) tab.classList.add('active');
+                title.textContent = cat + " Dishes";
+            } else {
+                document.getElementById('tab-all').classList.add('active');
+            }
+
+            let dishesToRender = window.foodData.dishes;
+            if (cat) {
+                dishesToRender = dishesToRender.filter(d => d.category === cat);
+            }
+
+            if (dishesToRender.length === 0) {
+                container.innerHTML = '<p>No dishes found for this category.</p>';
+                return;
+            }
+
+            let html = '';
+            dishesToRender.forEach(d => {
+                const typeClass = d.type === 'veg' ? 'success' : 'danger';
+                html += `
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="${d.img}" alt="${d.name}">
+                        <span class="type-icon ${d.type}" title="${d.type}" style="border: 2px solid var(--${typeClass}-color); color: var(--${typeClass}-color);"><i class="fa-solid fa-circle"></i></span>
+                    </div>
+                    <div class="dish-info">
+                        <div class="dish-header">
+                            <h4>${d.name}</h4>
+                        </div>
+                        <p class="restaurant-name">${d.restaurant}</p>
+                        <div class="dish-footer">
+                            <span class="price">₹${d.price}</span>
+                            <button class="add-to-cart-btn" onclick="cartSystem.addItem(${d.id}, '${d.name.replace(/'/g, "\\'")}', ${d.price}, '${d.img}')">Add</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>

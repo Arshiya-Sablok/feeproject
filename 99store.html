@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies - 99store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; }
+        .menu-item { display: flex; justify-content: space-between; padding: 20px; background: var(--surface-color); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); position: relative; }
+        .menu-item-info { max-width: 60%; }
+        .menu-item-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
+        .menu-item-img { display: flex; flex-direction: column; align-items: center; width: 120px; flex-shrink: 0; }
+        .menu-item-img img { width: 100%; height: 100px; border-radius: var(--radius-sm); object-fit: cover; margin-bottom: 8px; }
+        .menu-item-btn { background: white; color: var(--success-color); border: 1px solid var(--border-color); padding: 6px 0; width: 100%; text-align: center; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .menu-item-btn:hover { background: var(--bg-color); }
+        .menu-item-btn:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html">Offers</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" style="padding-top: 120px; min-height: 60vh; padding-bottom: 60px;">
+        <div class="section-header">
+            <h2>99store</h2>
+        </div>
+        <div class="menu-grid" id="store99ItemsContainer">
+            <!-- Dynamically populated by JS below -->
+            <p>Loading amazing deals...</p>
+        </div>
+    </div>
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/search.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('store99ItemsContainer');
+            if(!container) return;
+
+            // Find all dishes ending in 9 (e.g. 99, 149, 199, etc.)
+            let specialDishes = window.foodData.dishes.filter(d => d.price % 10 === 9);
+            
+            if(specialDishes.length === 0) {
+                container.innerHTML = '<p>No items found right now.</p>';
+                return;
+            }
+
+            let html = '';
+            specialDishes.forEach(d => {
+                const typeClass = d.type === 'veg' ? 'success' : 'danger';
+                html += `
+                    <div class="menu-item">
+                        <div class="menu-item-info">
+                            <span class="type-icon ${d.type}" style="display:inline-flex; width:16px; height:16px; border:1px solid var(--${typeClass}-color); border-radius:2px; font-size:10px; margin-bottom:8px; align-items:center; justify-content:center;"><i class="fa-solid fa-circle" style="color:var(--${typeClass}-color); font-size:8px;"></i></span>
+                            <h4>${d.name}</h4>
+                            <span class="price" style="font-size: 1.1rem; font-weight: 700; color: var(--primary-color);">₹${d.price}</span>
+                            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:8px;">${d.restaurant}</p>
+                            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:4px;">${d.description}</p>
+                        </div>
+                        <div class="menu-item-img">
+                            <img src="${d.img}" alt="${d.name}">
+                            <button class="menu-item-btn" onclick="cartSystem.addItem(${d.id}, '${d.name.replace(/'/g, "\\'")}', ${d.price}, '${d.img}')">ADD</button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>

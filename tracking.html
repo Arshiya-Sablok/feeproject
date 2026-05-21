@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Track Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .tracking-page { max-width: 800px; margin: 120px auto 60px; padding: 0 24px; }
+        .tracking-card { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px dashed var(--border-color); }
+        .map-placeholder { width: 100%; height: 250px; background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80') center/cover; border-radius: var(--radius-md); margin-bottom: 32px; position: relative; overflow: hidden; }
+        .map-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1.2rem; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 2px; background: var(--border-color); }
+        .timeline-step { position: relative; margin-bottom: 32px; }
+        .timeline-step:last-child { margin-bottom: 0; }
+        .step-icon { position: absolute; left: -30px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface-color); border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; z-index: 2; }
+        .timeline-step.active .step-icon { border-color: var(--primary-color); background: var(--primary-color); color: white; }
+        .timeline-step.completed .step-icon { border-color: var(--success-color); background: var(--success-color); color: white; }
+        .step-content h4 { margin-bottom: 4px; font-size: 1.1rem; }
+        .step-content p { color: var(--text-secondary); font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="tracking-page">
+        <div class="tracking-card">
+            <div class="order-header">
+                <div>
+                    <h2 style="margin-bottom: 4px;">Track Order</h2>
+                    <p style="color: var(--text-secondary);">Order <span style="color: var(--text-primary); font-weight: 600;">#FD24357</span></p>
+                </div>
+                <div style="text-align: right;">
+                    <span style="display: block; font-size: 1.8rem; font-weight: 700; color: var(--primary-color);">24 min</span>
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">Estimated Delivery</span>
+                </div>
+            </div>
+
+            <div class="map-placeholder" style="background: var(--bg-color); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; position: relative;">
+                <!-- Grid background patterns -->
+                <div style="position: absolute; inset: 0; background-image: radial-gradient(var(--border-color) 1px, transparent 1px); background-size: 20px 20px; opacity: 0.5;"></div>
+                
+                <svg width="100%" height="100%" viewBox="0 0 800 250" style="position: absolute; inset:0; z-index:1;">
+                    <!-- Road Path -->
+                    <path id="deliveryPath" d="M 100 125 C 250 50, 350 200, 500 125 C 600 70, 650 150, 700 125" fill="none" stroke="var(--border-color)" stroke-width="6" stroke-linecap="round"/>
+                    <path id="deliveryPathProgress" d="M 100 125 C 250 50, 350 200, 500 125 C 600 70, 650 150, 700 125" fill="none" stroke="var(--primary-color)" stroke-width="6" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000" style="transition: stroke-dashoffset 1s ease-in-out;"/>
+                </svg>
+                
+                <!-- Icons placed over SVG nodes -->
+                <div style="position: absolute; left: 80px; top: 105px; z-index: 2; display: flex; flex-direction: column; align-items: center;">
+                    <div style="background: var(--warning-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);"><i class="fa-solid fa-store" style="font-size: 0.9rem;"></i></div>
+                    <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px;">Restaurant</span>
+                </div>
+
+                <div style="position: absolute; left: 685px; top: 105px; z-index: 2; display: flex; flex-direction: column; align-items: center;">
+                    <div style="background: var(--success-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);"><i class="fa-solid fa-house" style="font-size: 0.9rem;"></i></div>
+                    <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); margin-top: 4px;">Home</span>
+                </div>
+
+                <!-- Animated Motorcycle Rider -->
+                <div id="deliveryRider" style="position: absolute; left: 100px; top: 125px; transform: translate(-50%, -50%); z-index: 3; transition: all 1s ease-in-out; display: flex; flex-direction: column; align-items: center;">
+                    <div style="background: var(--primary-color); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(255,126,95,0.4); border: 2px solid white;"><i class="fa-solid fa-motorcycle" style="font-size: 1rem;"></i></div>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-icon"></div>
+                    <div class="step-content">
+                        <h4>Order Received</h4>
+                        <p>We've received your order and payment.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon"></div>
+                    <div class="step-content">
+                        <h4>Food is being prepared</h4>
+                        <p>The restaurant is cooking your delicious meal.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon"></div>
+                    <div class="step-content">
+                        <h4>On the way</h4>
+                        <p>Our delivery partner is bringing your food.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-icon"></div>
+                    <div class="step-content">
+                        <h4>Delivered</h4>
+                        <p>Food reaches your door!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = document.getElementById('deliveryPath');
+            const progressPath = document.getElementById('deliveryPathProgress');
+            const rider = document.getElementById('deliveryRider');
+            const minutesSpan = document.querySelector('.order-header span[style*="primary-color"]');
+            
+            const steps = document.querySelectorAll('.timeline-step');
+            
+            const pathLength = path.getTotalLength();
+            progressPath.style.strokeDasharray = pathLength;
+            progressPath.style.strokeDashoffset = pathLength;
+            
+            let stage = 0; // 0: Placed, 1: Preparing, 2: On the Way, 3: Delivered
+            let minutesLeft = 24;
+            
+            function updateTracker() {
+                steps.forEach((step, idx) => {
+                    step.classList.remove('completed', 'active');
+                    const iconEl = step.querySelector('.step-icon');
+                    
+                    if (idx < stage) {
+                        step.classList.add('completed');
+                        if (iconEl) iconEl.innerHTML = '<i class="fa-solid fa-check" style="font-size: 10px;"></i>';
+                    } else if (idx === stage) {
+                        step.classList.add('active');
+                        if (idx === 0) iconEl.innerHTML = '<i class="fa-solid fa-check" style="font-size: 10px;"></i>';
+                        else if (idx === 1) iconEl.innerHTML = '<i class="fa-solid fa-fire-burner" style="font-size: 10px;"></i>';
+                        else if (idx === 2) iconEl.innerHTML = '<i class="fa-solid fa-motorcycle" style="font-size: 10px;"></i>';
+                        else if (idx === 3) iconEl.innerHTML = '<i class="fa-solid fa-house" style="font-size: 10px;"></i>';
+                    } else {
+                        if (idx === 0) iconEl.innerHTML = '<i class="fa-solid fa-check" style="font-size: 10px;"></i>';
+                        else if (idx === 1) iconEl.innerHTML = '<i class="fa-solid fa-fire-burner" style="font-size: 10px;"></i>';
+                        else if (idx === 2) iconEl.innerHTML = '<i class="fa-solid fa-motorcycle" style="font-size: 10px;"></i>';
+                        else if (idx === 3) iconEl.innerHTML = '<i class="fa-solid fa-house" style="font-size: 10px;"></i>';
+                    }
+                });
+                
+                let percent = 0;
+                if (stage === 0) {
+                    percent = 0.0;
+                    minutesLeft = 24;
+                } else if (stage === 1) {
+                    percent = 0.3;
+                    minutesLeft = 18;
+                } else if (stage === 2) {
+                    percent = 0.78;
+                    minutesLeft = 8;
+                } else if (stage === 3) {
+                    percent = 1.0;
+                    minutesLeft = 0;
+                }
+                
+                if (minutesSpan) {
+                    minutesSpan.textContent = stage === 3 ? 'Arrived!' : `${minutesLeft} min`;
+                }
+                
+                const offset = pathLength - (percent * pathLength);
+                progressPath.style.strokeDashoffset = offset;
+                
+                const point = path.getPointAtLength(percent * pathLength);
+                rider.style.left = point.x + 'px';
+                rider.style.top = point.y + 'px';
+                
+                if (stage === 3) {
+                    if(typeof confetti === 'function') {
+                        let duration = 3 * 1000;
+                        let end = Date.now() + duration;
+
+                        (function frame() {
+                            confetti({
+                                particleCount: 5,
+                                angle: 60,
+                                spread: 55,
+                                origin: { x: 0 },
+                                colors: ['#ff4757', '#2ed573', '#ffffff', '#ffa502']
+                            });
+                            confetti({
+                                particleCount: 5,
+                                angle: 120,
+                                spread: 55,
+                                origin: { x: 1 },
+                                colors: ['#ff4757', '#2ed573', '#ffffff', '#ffa502']
+                            });
+
+                            if (Date.now() < end) {
+                                requestAnimationFrame(frame);
+                            }
+                        }());
+                    }
+                    
+                    if (window.showToast) {
+                        window.showToast("Your food has arrived! Enjoy your delicious meal!");
+                    }
+                    
+                    clearInterval(trackerInterval);
+                }
+            }
+            
+            setTimeout(updateTracker, 200);
+            
+            const trackerInterval = setInterval(() => {
+                if (stage < 3) {
+                    stage++;
+                    updateTracker();
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

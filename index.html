@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies - Delicious Food Delivered To Your Door</title>
+    <meta name="description" content="Order delicious food from top restaurants near you. Fast delivery, amazing offers and a massive menu covering all cuisines.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 1️⃣ Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-burger"></i> Foodies
+            </a>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search a restaurant or dish...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="search-suggestions" id="searchSuggestions">
+                    <!-- Dynamic live suggestions -->
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html">Offers <span class="badge">New</span></a></li>
+                <li><a href="favorites.html"><i class="fa-regular fa-heart"></i> Wishlist</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+
+            <!-- Dark Mode & Cart -->
+            <div class="nav-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="cart-icon-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <!-- Cart Preview Popup -->
+                    <div class="cart-preview" id="cartPreviewPopup">
+                        <h4>Your Cart</h4>
+                        <div id="cartPreviewItems" class="preview-items">
+                            <p class="empty-msg">Cart is empty</p>
+                        </div>
+                        <div class="preview-total">
+                            <span>Total:</span> <span id="previewTotalVal">₹0</span>
+                        </div>
+                        <a href="cart.html" class="btn btn-primary btn-block">Go to Cart</a>
+                    </div>
+                </div>
+                <!-- Mobile Menu Toggle -->
+                <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2️⃣ Hero Banner Section -->
+    <section class="hero-banner">
+        <video autoplay loop muted playsinline class="hero-bg-video">
+            <source src="photos/your-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+            <h1>Delicious Food <br><span class="highlight">Delivered To Your Door</span></h1>
+            <p>From local favorites to international cuisines, get everything delivered hot & fresh.</p>
+            <div class="hero-buttons">
+                <a href="#quick-order" class="btn btn-primary">Order Now</a>
+                <a href="restaurants.html" class="btn btn-outline">Explore Restaurants</a>
+            </div>
+            
+            <!-- Sliding promotional text -->
+            <div class="sliding-promo">
+                <div class="promo-track">
+                    <span>🔥 50% OFF on your first order (Code: WELCOME50)</span>
+                    <span>•</span>
+                    <span>🛵 Free Delivery above ₹199</span>
+                    <span>•</span>
+                    <span>⚡ Lightning Fast 30-min Delivery</span>
+                    <span>•</span>
+                    <span>🍰 Free Dessert on weekends</span>
+                    <span>•</span>
+                    <span>🔥 50% OFF on your first order</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3️⃣ Food Categories Section -->
+    <section class="container categories-section">
+        <div class="section-header">
+            <h2>What's on your mind?</h2>
+        </div>
+        <div class="categories-grid">
+            <a href="dishes.html?cat=pizza" class="category-card">
+                <div class="cat-icon">🍕</div>
+                <span>Pizza</span>
+            </a>
+            <a href="dishes.html?cat=burger" class="category-card">
+                <div class="cat-icon">🍔</div>
+                <span>Burger</span>
+            </a>
+            <a href="dishes.html?cat=chinese" class="category-card">
+                <div class="cat-icon">🍜</div>
+                <span>Chinese</span>
+            </a>
+            <a href="dishes.html?cat=indian" class="category-card">
+                <div class="cat-icon">🍛</div>
+                <span>Indian</span>
+            </a>
+            <a href="dishes.html?cat=healthy" class="category-card">
+                <div class="cat-icon">🥗</div>
+                <span>Healthy</span>
+            </a>
+            <a href="dishes.html?cat=desserts" class="category-card">
+                <div class="cat-icon">🍰</div>
+                <span>Desserts</span>
+            </a>
+            <a href="dishes.html?cat=drinks" class="category-card">
+                <div class="cat-icon">☕</div>
+                <span>Drinks</span>
+            </a>
+            <a href="99store.html" class="category-card store-99">
+                <div class="cat-icon">🏷️</div>
+                <span>99 Store</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 6️⃣ Best Offers Section 🏷 -->
+    <section class="container offers-section">
+        <div class="section-header">
+            <h2>Best Offers For You</h2>
+            <a href="offers.html" class="view-all">View All</a>
+        </div>
+        <div class="offer-cards-scroll">
+            <div class="offer-card orange-gradient">
+                <div class="offer-info">
+                    <h3>50% OFF</h3>
+                    <p>Up to ₹100 on first order</p>
+                    <div class="coupon-code">CODE: FOOD50</div>
+                </div>
+                <img src="photos/crispy fries.jpeg" alt="Offer Pizza">
+            </div>
+            <div class="offer-card blue-gradient">
+                <div class="offer-info">
+                    <h3>FREE DELIVERY</h3>
+                    <p>On orders above ₹199</p>
+                    <div class="coupon-code">CODE: FREEDEL</div>
+                </div>
+                <img src="photos/FREE DELIVERY.jpeg" alt="Offer Burger">
+            </div>
+            <div class="offer-card green-gradient">
+                <div class="offer-info">
+                    <h3>FLAT 20% OFF</h3>
+                    <p>On select restaurants</p>
+                    <div class="coupon-code">CODE: PARTY20</div>
+                </div>
+                <img src="photos/spring roll.jpg" alt="Offer Meal">
+            </div>
+        </div>
+    </section>
+
+    <!-- 4️⃣ Popular Restaurants Section -->
+    <section class="container restaurants-section">
+        <div class="section-header">
+            <h2>Top Restaurants near you</h2>
+            <a href="restaurants.html" class="view-all">View All</a>
+        </div>
+        <div class="restaurant-grid" id="popularRestaurantsContainer">
+            <!-- Will be populated by JS or static for now -->
+            <a href="menu.html?id=1" class="restaurant-card">
+                <div class="rest-image">
+                    <img src="photos/pizza.jpeg" alt="Pizza Hut">
+                    <span class="view-menu-overlay">View Menu</span>
+                </div>
+                <div class="rest-details">
+                    <div class="rest-header">
+                        <h3>Pizza House</h3>
+                        <span class="rating"><i class="fa-solid fa-star"></i> 4.4</span>
+                    </div>
+                    <p class="cuisines">Italian • Pizza • Fast Food</p>
+                    <div class="rest-meta">
+                        <span><i class="fa-solid fa-clock"></i> 30 min</span>
+                        <span><i class="fa-solid fa-motorcycle"></i> Free</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="menu.html?id=2" class="restaurant-card">
+                <div class="rest-image">
+                    <img src="photos/burger.jpeg" alt="Burger King">
+                    <span class="view-menu-overlay">View Menu</span>
+                </div>
+                <div class="rest-details">
+                    <div class="rest-header">
+                        <h3>Burger Empire</h3>
+                        <span class="rating"><i class="fa-solid fa-star"></i> 4.6</span>
+                    </div>
+                    <p class="cuisines">American • Burger • Fast Food</p>
+                    <div class="rest-meta">
+                        <span><i class="fa-solid fa-clock"></i> 25 min</span>
+                        <span><i class="fa-solid fa-motorcycle"></i> ₹40</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="menu.html?id=3" class="restaurant-card">
+                <div class="rest-image">
+                    <img src="photos/chinese wok.jpeg" alt="Chinese Wok">
+                    <span class="promoted-badge">Promoted</span>
+                    <span class="view-menu-overlay">View Menu</span>
+                </div>
+                <div class="rest-details">
+                    <div class="rest-header">
+                        <h3>Chinese Wok</h3>
+                        <span class="rating"><i class="fa-solid fa-star"></i> 4.2</span>
+                    </div>
+                    <p class="cuisines">Chinese • Asian</p>
+                    <div class="rest-meta">
+                        <span><i class="fa-solid fa-clock"></i> 40 min</span>
+                        <span><i class="fa-solid fa-motorcycle"></i> ₹30</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="menu.html?id=4" class="restaurant-card">
+                <div class="rest-image">
+                    <img src="photos/Spice Junction.jpeg" alt="Indian Spice">
+                    <span class="view-menu-overlay">View Menu</span>
+                </div>
+                <div class="rest-details">
+                    <div class="rest-header">
+                        <h3>Spice Junction</h3>
+                        <span class="rating"><i class="fa-solid fa-star"></i> 4.8</span>
+                    </div>
+                    <p class="cuisines">North Indian • Mughlai • Biryani</p>
+                    <div class="rest-meta">
+                        <span><i class="fa-solid fa-clock"></i> 35 min</span>
+                        <span><i class="fa-solid fa-motorcycle"></i> Free</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 5️⃣ Trending Food Section 🔥 -->
+    <section class="container trending-section">
+        <div class="section-header">
+            <h2>Trending Dishes 🔥</h2>
+            <a href="dishes.html" class="view-all">View All</a>
+        </div>
+        <div class="dishes-grid" id="trendingDishesContainer">
+            <!-- Dish 1 -->
+            <div class="dish-card">
+                <div class="dish-image">
+                    <img src="photos/hyderabadi chicken biryani.png" alt="Chicken Biryani">
+                    <span class="type-icon non-veg" title="Non-Veg"><i class="fa-solid fa-caret-up"></i></span>
+                </div>
+                <div class="dish-info">
+                    <div class="dish-header">
+                        <h4>Hyderabadi Biryani</h4>
+                    </div>
+                    <p class="restaurant-name">Spice Junction</p>
+                    <div class="dish-footer">
+                        <span class="price">₹249</span>
+                        <button class="add-to-cart-btn" onclick="cartSystem.addItem(101, 'Hyderabadi Biryani', 249, 'https://images.unsplash.com/photo-1564936281291-294551497d81')">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dish 2 -->
+            <div class="dish-card">
+                <div class="dish-image">
+                    <img src="photos/peri peri pizza.jpeg" alt="Peri Peri Pizza">
+                    <span class="type-icon veg" title="Veg"><i class="fa-solid fa-circle"></i></span>
+                </div>
+                <div class="dish-info">
+                    <div class="dish-header">
+                        <h4>Peri Peri Pizza</h4>
+                    </div>
+                    <p class="restaurant-name">Pizza House</p>
+                    <div class="dish-footer">
+                        <span class="price">₹199</span>
+                        <button class="add-to-cart-btn" onclick="cartSystem.addItem(102, 'Peri Peri Pizza', 199, 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38')">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dish 3 -->
+            <div class="dish-card">
+                <div class="dish-image">
+                    <img src="photos/Classic Chicken Burger.jpeg" alt="Classic Burger">
+                    <span class="type-icon non-veg" title="Non-Veg"><i class="fa-solid fa-caret-up"></i></span>
+                </div>
+                <div class="dish-info">
+                    <div class="dish-header">
+                        <h4>Classic Chicken Burger</h4>
+                    </div>
+                    <p class="restaurant-name">Burger Empire</p>
+                    <div class="dish-footer">
+                        <span class="price">₹129</span>
+                        <button class="add-to-cart-btn" onclick="cartSystem.addItem(103, 'Classic Chicken Burger', 129, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd')">Add</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dish 4 -->
+            <div class="dish-card">
+                <div class="dish-image">
+                    <img src="photos/Veg Maharaja Mac.jpeg" alt="Burger">
+                    <span class="type-icon veg" title="Veg"><i class="fa-solid fa-circle"></i></span>
+                </div>
+                <div class="dish-info">
+                    <div class="dish-header">
+                        <h4>Veg Maharaja Mac</h4>
+                    </div>
+                    <p class="restaurant-name">Burger Empire</p>
+                    <div class="dish-footer">
+                        <span class="price">₹149</span>
+                        <button class="add-to-cart-btn" onclick="cartSystem.addItem(104, 'Veg Maharaja Mac', 149, 'https://images.unsplash.com/photo-1550547660-d9450f859349')">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7️⃣ Quick Order Section ⚡ -->
+    <section id="quick-order" class="quick-order-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Quick Order ⚡</h2>
+                <p>Add these everyday favorites directly to your cart</p>
+            </div>
+            <div class="quick-order-carousel">
+                <div class="quick-item">
+                    <img src="photos/garlic bread.jpg" alt="Garlic Bread">
+                    <div class="q-info">
+                        <h4>Garlic Bread</h4>
+                        <span>₹99</span>
+                    </div>
+                    <button class="btn btn-sm add-quick-btn" onclick="cartSystem.addItem(201, 'Garlic Bread', 99, 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c')"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="quick-item">
+                    <img src="photos/crispy fries.jpeg" alt="French Fries">
+                    <div class="q-info">
+                        <h4>Crispy Fries</h4>
+                        <span>₹79</span>
+                    </div>
+                    <button class="btn btn-sm add-quick-btn" onclick="cartSystem.addItem(202, 'Crispy Fries', 79, 'https://images.unsplash.com/photo-1623653387945-2fd25214f8fc')"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="quick-item">
+                    <img src="photos/Healthy Corner.jpeg" alt="Healthy Bowl">
+                    <div class="q-info">
+                        <h4>Super Bowl</h4>
+                        <span>₹149</span>
+                    </div>
+                    <button class="btn btn-sm add-quick-btn" onclick="cartSystem.addItem(203, 'Super Bowl', 149, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c')"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="quick-item">
+                    <img src="photos/choco lava cake.jpg" alt="Choco Lava">
+                    <div class="q-info">
+                        <h4>Choco Lava</h4>
+                        <span>₹89</span>
+                    </div>
+                    <button class="btn btn-sm add-quick-btn" onclick="cartSystem.addItem(204, 'Choco Lava', 89, 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35')"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8️⃣ Cuisine Explorer 🌍 -->
+    <section class="container cuisine-section">
+        <div class="section-header">
+            <h2>Explore Cuisines 🌍</h2>
+        </div>
+        <div class="cuisine-grid">
+            <div class="cuisine-card" style="background-image: url('photos/italian.jpeg');">
+                <a href="dishes.html?cat=pizza">
+                    <h3>Italian</h3>
+                </a>
+            </div>
+            <div class="cuisine-card" style="background-image: url('photos/chinese.jpeg');">
+                <a href="dishes.html?cat=chinese">
+                    <h3>Chinese</h3>
+                </a>
+            </div>
+            <div class="cuisine-card" style="background-image: url('photos/Spice\ Junction.jpeg');">
+                <a href="dishes.html?cat=indian">
+                    <h3>Indian</h3>
+                </a>
+            </div>
+            <div class="cuisine-card" style="background-image: url('photos/Taco\ Fiesta.jpeg');">
+                <a href="dishes.html?cat=mexican">
+                    <h3>Mexican</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9️⃣ How It Works Section -->
+    <section class="how-it-works-section">
+        <div class="container">
+            <div class="section-header center">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps-container">
+                <div class="step-box">
+                    <div class="step-icon"><i class="fa-solid fa-store"></i></div>
+                    <h4>1. Choose Restaurant</h4>
+                    <p>Find the best local restaurants near you.</p>
+                </div>
+                <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-box">
+                    <div class="step-icon"><i class="fa-solid fa-burger"></i></div>
+                    <h4>2. Select Food</h4>
+                    <p>Browse the menu and pick your favorite dishes.</p>
+                </div>
+                <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-box">
+                    <div class="step-icon"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                    <h4>3. Add to Cart</h4>
+                    <p>Place your order securely and fast.</p>
+                </div>
+                <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-box">
+                    <div class="step-icon"><i class="fa-solid fa-face-smile-beam"></i></div>
+                    <h4>4. Enjoy Delivery 🍕</h4>
+                    <p>Food arrives hot and fresh at your door.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🔟 Customer Reviews ⭐ -->
+    <section class="container reviews-section">
+        <div class="section-header">
+            <h2>What Our Customers Say</h2>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>"Amazing food and quick delivery! The tracking feature is super helpful."</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">SJ</div>
+                    <span>Sarah Jenkins</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>"Best deals on my favorite restaurants. The UI is so sleek and easy to use."</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">MR</div>
+                    <span>Mike Ross</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐</div>
+                <p>"Loved the 99 Store options. Really affordable and tasty food!"</p>
+                <div class="customer-info">
+                    <div class="customer-avatar">AD</div>
+                    <span>Aarav Desai</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1️⃣2️⃣ App Promotion Section 📱 -->
+    <section class="app-promotion">
+        <div class="container app-promo-inner">
+            <div class="app-promo-content">
+                <h2>Download our app for faster ordering</h2>
+                <p>Get exclusive app-only discounts, real-time tracking, and a much smoother experience.</p>
+                <div class="app-buttons">
+                    <button class="btn btn-dark"><i class="fa-brands fa-apple"></i> App Store</button>
+                    <button class="btn btn-dark"><i class="fa-brands fa-google-play"></i> Google Play</button>
+                </div>
+            </div>
+            <!-- Assuming we have a mockup representation without an image just keeping purely CSS based mobile layout if possible, or using an available placeholder. -->
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="container banner-inner">
+            <h2>Join Our Newsletter</h2>
+            <p>Get updates on new restaurants and special offers.</p>
+            <div class="newsletter-form">
+                <input type="email" id="newsletterEmailInput" placeholder="Enter your email address">
+                <button class="btn btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 1️⃣3️⃣ Footer Section -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="footer-logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+                <p>Delivering joy and taste to your doorstep.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Foodies App. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Container defined in script.js to show "Added to Cart" -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Newsletter Popup Modal -->
+    <div id="newsletterModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="modal-content" style="background: var(--bg-color); padding: 32px; border-radius: var(--radius-lg); text-align: center; max-width: 400px; width: 90%;">
+            <i class="fa-solid fa-envelope-circle-check" style="font-size: 3rem; color: var(--success-color); margin-bottom: 16px;"></i>
+            <h2 style="margin-bottom: 12px;">Subscribed!</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">Thank you for joining our newsletter. We'll send updates to <strong id="subscribedEmailSpan"></strong>!</p>
+            <button class="btn btn-primary btn-block" onclick="document.getElementById('newsletterModal').style.display='none'">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/search.js"></script>
+    <script>
+        function subscribeNewsletter() {
+            const emailInput = document.getElementById('newsletterEmailInput');
+            const email = emailInput.value.trim();
+            if (email && email.includes('@')) {
+                document.getElementById('subscribedEmailSpan').textContent = email;
+                document.getElementById('newsletterModal').style.display = 'flex';
+                emailInput.value = '';
+            } else {
+                if(window.showToast) window.showToast('Please enter a valid email address.');
+            }
+        }
+    </script>
+</body>
+</html>

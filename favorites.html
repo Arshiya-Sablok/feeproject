@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodies - Favorites</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <ul class="nav-links">
+                <li><a href="restaurants.html">Restaurants</a></li>
+                <li><a href="offers.html">Offers</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" style="padding-top: 120px; min-height: 60vh; padding-bottom: 60px;">
+        <div class="section-header">
+            <h2>Your Wishlist</h2>
+            <p>Your favorite restaurants and dishes, all in one place.</p>
+        </div>
+        
+        <!-- Restaurants Section -->
+        <h3 style="margin-bottom: 24px; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-store" style="color:var(--primary-color);"></i> Favorite Restaurants</h3>
+        <div class="restaurant-grid" id="favoritesGrid" style="margin-bottom: 60px;">
+            <!-- Dynamically populated via JS -->
+            <p>Loading your favorites...</p>
+        </div>
+
+        <!-- Dishes Section -->
+        <h3 style="margin-bottom: 24px; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-utensils" style="color:var(--primary-color);"></i> Favorite Dishes</h3>
+        <div class="restaurant-grid" id="favoriteDishesGrid">
+            <!-- Dynamically populated via JS -->
+            <p>Loading your favorite dishes...</p>
+        </div>
+    </div>
+    <script>
+        function renderFavorites() {
+            // Render Restaurants
+            const container = document.getElementById('favoritesGrid');
+            if(container) {
+                const favIds = wishlistSystem.wishlist;
+                const data = window.foodData.restaurants.filter(r => favIds.includes(r.id));
+
+                if(data.length === 0) {
+                    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); font-size: 1.1rem; padding: 30px 0;">Your wishlist is empty. Start adding some restaurants!</p>`;
+                } else {
+                    let html = '';
+                    data.forEach(r => {
+                        const hasOffer = [1, 4, 5].includes(r.id);
+                        const offerHtml = hasOffer ? `<div style="position:absolute; top:12px; left:12px; background:var(--primary-color); color:white; padding:4px 12px; font-weight:800; border-radius:var(--radius-sm); font-size:0.8rem; box-shadow:var(--shadow-sm); z-index:10;">BEST OFFER</div>` : '';
+
+                        html += `
+                        <a href="menu.html?id=${r.id}" class="restaurant-card">
+                            <div class="rest-image">
+                                ${offerHtml}
+                                <button class="wishlist-btn" data-id="${r.id}" onclick="event.preventDefault(); wishlistSystem.toggle(${r.id})" style="position:absolute; top:12px; right:12px; background:white; border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); z-index:10; font-size:1.1rem; transition:transform 0.2s; color:var(--text-secondary);">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                                <img src="${r.img}?w=500&q=80" alt="${r.name}">
+                                <span class="view-menu-overlay">View Menu</span>
+                            </div>
+                            <div class="rest-details">
+                                <div class="rest-header">
+                                    <h3>${r.name}</h3>
+                                    <span class="rating"><i class="fa-solid fa-star"></i> ${r.rating}</span>
+                                </div>
+                                <p class="cuisines">${r.cuisine}</p>
+                                <div class="rest-meta">
+                                    <span><i class="fa-solid fa-clock"></i> ${r.time}</span>
+                                    <span><i class="fa-solid fa-motorcycle"></i> ${r.id % 2 === 0 ? "Free" : "₹40"}</span>
+                                </div>
+                            </div>
+                        </a>
+                        `;
+                    });
+                    container.innerHTML = html;
+                }
+            }
+
+            // Render Dishes
+            const dishesContainer = document.getElementById('favoriteDishesGrid');
+            if (dishesContainer) {
+                const dishIds = wishlistSystem.dishWishlist || [];
+                const dishData = window.foodData.dishes.filter(d => dishIds.includes(d.id));
+
+                if(dishData.length === 0) {
+                    dishesContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); font-size: 1.1rem; padding: 30px 0;">No favorite dishes yet. Add dishes from the menu pages!</p>`;
+                } else {
+                    let dishHtml = '';
+                    dishData.forEach(d => {
+                        const typeClass = d.type === 'veg' ? 'success' : 'danger';
+                        dishHtml += `
+                        <div class="restaurant-card" style="position:relative; display:flex; flex-direction:column; overflow:hidden; min-height: 320px;">
+                            <div class="rest-image" style="position:relative; height:180px;">
+                                <button class="wishlist-dish-btn" data-id="${d.id}" onclick="event.preventDefault(); wishlistSystem.toggleDish(${d.id});" style="position:absolute; top:12px; right:12px; background:white; border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); z-index:10; font-size:1.1rem; transition:transform 0.2s; color:var(--text-secondary);">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                                <img src="${d.img}" alt="${d.name}" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <div class="rest-details" style="flex:1; display:flex; flex-direction:column; justify-content:space-between; padding:16px;">
+                                <div>
+                                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                                        <span class="type-icon ${d.type}" style="display:inline-flex; width:10px; height:10px; border:1px solid var(--${typeClass}-color); border-radius:2px; align-items:center; justify-content:center;"><i class="fa-solid fa-circle" style="color:var(--${typeClass}-color); font-size:6px;"></i></span>
+                                        <h3 style="font-size:1.1rem; font-weight:600; margin:0; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; color: var(--text-primary);">${d.name}</h3>
+                                    </div>
+                                    <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:12px;">₹${d.price} • ${d.restaurant}</p>
+                                </div>
+                                <button class="btn btn-primary btn-block btn-sm" onclick="if(window.cartSystem){ window.cartSystem.addItem(${d.id}, '${d.name.replace(/'/g, "\\'")}', ${d.price}, '${d.img}'); }" style="font-weight:700; border-radius: var(--radius-sm);">ADD TO CART</button>
+                            </div>
+                        </div>
+                        `;
+                    });
+                    dishesContainer.innerHTML = dishHtml;
+                }
+            }
+
+            setTimeout(() => wishlistSystem.updateButtons(), 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFavorites();
+        });
+    </script>
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/auth.js"></script>
+<script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html> 

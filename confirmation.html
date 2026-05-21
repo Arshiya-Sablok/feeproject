@@ -1,0 +1,248 @@
+<!-- confirmation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Order Confirmed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .conf-page { min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 24px; }
+        .conf-card { background: var(--surface-color); padding: 60px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); max-width: 500px; width: 100%; animation: fadeUp 0.5s ease; }
+        .conf-icon { font-size: 5rem; color: var(--success-color); margin-bottom: 24px; }
+        
+        /* Survey Modal Styles */
+        .survey-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: confFadeIn 0.3s ease;
+        }
+        .survey-modal-content {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 480px;
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            position: relative;
+            transform: scale(0.9);
+            animation: confScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            text-align: center;
+        }
+        .survey-q {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .survey-q label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .emoji-group {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 12px;
+        }
+        .emoji-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            filter: grayscale(0.7);
+            padding: 4px;
+            outline: none;
+        }
+        .emoji-btn:hover {
+            transform: scale(1.3);
+            filter: grayscale(0);
+        }
+        .emoji-btn.selected {
+            transform: scale(1.35);
+            filter: grayscale(0);
+            text-shadow: 0 0 12px rgba(255, 126, 95, 0.5);
+        }
+        @keyframes confFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes confScaleUp {
+            to { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+        </div>
+    </nav>
+
+    <div class="container conf-page">
+        <div class="conf-card">
+            <div class="conf-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h1 style="margin-bottom: 8px;">Order Successful! 🎉</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">Thank you for ordering with Foodies. Your delicious food is being prepared.</p>
+            
+            <div style="background: var(--bg-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 32px;">
+                <h3 style="margin-bottom: 8px;">Order ID: <span style="color: var(--primary-color);">#FD24357</span></h3>
+                <p><strong>Estimated delivery:</strong> 30 minutes ⏱</p>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border-color);">
+                    <a href="tracking.html" style="color: var(--text-secondary); font-weight: 500;"><i class="fa-solid fa-box"></i> Track Order</a>
+                </div>
+            </div>
+
+            <a href="index.html" class="btn btn-primary btn-block">Back to Home</a>
+        </div>
+    </div>
+    
+    <!-- Emoji Survey Modal overlay -->
+    <div id="surveyModal" class="survey-modal-overlay" style="display: none;">
+        <div class="survey-modal-content">
+            <div style="font-size: 3rem; margin-bottom: 12px; animation: confBounce 2s infinite;">📋</div>
+            <h2 style="margin-bottom: 8px; font-weight: 700;">We'd Love Your Feedback!</h2>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">Please help us improve our services by answering these quick questions.</p>
+            
+            <form id="surveyForm" onsubmit="submitSurvey(event)">
+                <!-- Q1 -->
+                <div class="survey-q">
+                    <label>1. How was your overall ordering experience?</label>
+                    <div class="emoji-group" data-q="q1">
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😠', 1)">😠</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙁', 2)">🙁</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😐', 3)">😐</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙂', 4)">🙂</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😍', 5)">😍</button>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="survey-q">
+                    <label>2. How easy was it to find your favorite food?</label>
+                    <div class="emoji-group" data-q="q2">
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😠', 1)">😠</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙁', 2)">🙁</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😐', 3)">😐</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙂', 4)">🙂</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😍', 5)">😍</button>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="survey-q">
+                    <label>3. How would you rate our new app design features?</label>
+                    <div class="emoji-group" data-q="q3">
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😠', 1)">😠</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙁', 2)">🙁</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😐', 3)">😐</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '🙂', 4)">🙂</button>
+                        <button type="button" class="emoji-btn" onclick="selectSurveyEmoji(this, '😍', 5)">😍</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="text-align: left; margin-bottom: 24px;">
+                    <label style="font-weight: 600; margin-bottom: 8px; display: block; font-size: 0.95rem;">Additional comments (Optional)</label>
+                    <textarea id="surveyComments" placeholder="Tell us how we can make your experience even better..." style="width: 100%; height: 80px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9rem; resize: none; background: var(--bg-color); color: var(--text-primary);"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 16px;">
+                    <button type="button" class="btn btn-outline btn-block" onclick="closeSurvey()" style="flex: 1; padding: 12px; border-radius: var(--radius-sm);">Skip</button>
+                    <button type="submit" class="btn btn-primary btn-block" style="flex: 1; padding: 12px; border-radius: var(--radius-sm);">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auto-triggered Toast Notification exactly as requested -->
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        const surveyAnswers = { q1: null, q2: null, q3: null };
+
+        function selectSurveyEmoji(el, emoji, val) {
+            const group = el.parentElement;
+            const q = group.getAttribute('data-q');
+            
+            const siblingButtons = group.querySelectorAll('.emoji-btn');
+            siblingButtons.forEach(btn => btn.classList.remove('selected'));
+            
+            el.classList.add('selected');
+            surveyAnswers[q] = val;
+        }
+
+        function closeSurvey() {
+            const modal = document.getElementById('surveyModal');
+            modal.style.transition = 'opacity 0.3s ease';
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        function submitSurvey(e) {
+            e.preventDefault();
+            
+            // Basic checking
+            if(!surveyAnswers.q1 || !surveyAnswers.q2 || !surveyAnswers.q3) {
+                showToast("Please rate all three questions before submitting!");
+                return;
+            }
+            
+            // Get comments
+            const comments = document.getElementById('surveyComments').value.trim();
+            const surveyData = {
+                ratings: surveyAnswers,
+                comments: comments,
+                timestamp: Date.now()
+            };
+            
+            // Save locally
+            localStorage.setItem('foodies_latest_survey', JSON.stringify(surveyData));
+            
+            // Erupt twin Confetti blasts
+            if(typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+            
+            showToast("Thank you so much for your valuable feedback! 😍");
+            closeSurvey();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                showToast("Order is placed successfully!");
+            }, 300);
+
+            // Pop up the service survey modal automatically after 1.5 seconds
+            setTimeout(() => {
+                const modal = document.getElementById('surveyModal');
+                modal.style.opacity = '0';
+                modal.style.display = 'flex';
+                // Trigger reflow
+                modal.offsetHeight;
+                modal.style.transition = 'opacity 0.3s ease';
+                modal.style.opacity = '1';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

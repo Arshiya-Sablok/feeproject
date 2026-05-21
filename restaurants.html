@@ -1,0 +1,206 @@
+<!-- restaurants.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Foodies - Restaurants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-header { background: var(--primary-color); padding: 120px 24px 60px; color: white; text-align: center; }
+        .page-header h1 { font-size: 3rem; margin-bottom: 16px; }
+        
+        .filter-container { padding: 32px 0; border-bottom: 1px solid var(--border-color); display: flex; gap: 16px; overflow-x: auto; }
+        .filter-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius-full); border: 1px solid var(--border-color); background: var(--surface-color); font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; color: var(--text-primary); }
+        .filter-chip:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        .filter-chip.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        
+        .restaurants-section { padding: 60px 0; }
+        .restaurants-section h2 { margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <script>if (localStorage.getItem('theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-burger"></i> Foodies</a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search a restaurant or dish...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="restaurants.html" style="color: var(--primary-color);">Restaurants</a></li>
+                <li><a href="offers.html">Offers</a></li>
+                <li><a href="favorites.html"><i class="fa-regular fa-heart"></i> Wishlist</a></li>
+                <li><a href="profile.html">Orders</a></li>
+                <li><a href="help.html">Help</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fa-regular fa-user"></i> Login</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="dark-mode-toggle" id="darkModeToggle"><i class="fa-solid fa-moon"></i></button>
+                <div class="cart-icon-container">
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i><span class="cart-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Best Restaurants in Town</h1>
+        <p>Discover culinary excellence delivered just for you.</p>
+    </div>
+
+    <div class="container">
+        <div class="filter-container" id="filterContainer" style="align-items: center;">
+            <div style="display:flex; align-items:center; gap:8px; margin-right:12px;">
+                <span style="font-weight:600; white-space:nowrap;">Sort By:</span>
+                <select id="sortBy" onchange="applySort(this.value)" style="padding:8px 12px; border-radius:var(--radius-full); border:1px solid var(--border-color); background:var(--surface-color); color:var(--text-primary); cursor:pointer; outline:none; font-family:inherit;">
+                    <option value="default">Relevance</option>
+                    <option value="rating">Rating: High to Low</option>
+                    <option value="time">Delivery Time: Fastest</option>
+                </select>
+            </div>
+            <button class="filter-chip" onclick="toggleFilter(this, 'rating')">Rating 4.0+</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'fast_delivery')">Fast Delivery</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'veg')">Veg</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'non_veg')">Non-Veg</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'offers')">Offers</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'pizza')">Pizza</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'burger')">Burger</button>
+            <button class="filter-chip" onclick="toggleFilter(this, 'healthy')">Healthy</button>
+        </div>
+
+        <div class="restaurants-section">
+            <h2 id="restCountHeader">Restaurants</h2>
+            <div class="restaurant-grid" id="restaurantGrid">
+                <!-- Dynamically Populated via JS -->
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/search.js"></script>
+    
+    <!-- Dynamic Rendering & Filtering Logic -->
+    <script>
+        let activeFilters = [];
+        let currentSort = 'default';
+
+        function applySort(val) {
+            currentSort = val;
+            renderRestaurants();
+        }
+
+        function renderRestaurants() {
+            const container = document.getElementById('restaurantGrid');
+            const data = window.foodData.restaurants;
+            const allDishes = window.foodData.dishes;
+
+            let filtered = data.filter(r => {
+                let match = true;
+
+                if (activeFilters.includes('rating')) match = match && r.rating >= 4.0;
+                if (activeFilters.includes('fast_delivery')) match = match && parseInt(r.time) <= 25; // <= 25 mins is fast delivery
+                if (activeFilters.includes('veg')) {
+                    const rDishes = allDishes.filter(d => d.restaurantId === r.id);
+                    const isVeg = rDishes.length > 0 && rDishes.every(d => d.type === 'veg');
+                    match = match && isVeg;
+                }
+                if (activeFilters.includes('non_veg')) {
+                    const rDishes = allDishes.filter(d => d.restaurantId === r.id);
+                    const hasNonVeg = rDishes.some(d => d.type === 'non-veg');
+                    match = match && hasNonVeg;
+                }
+                if (activeFilters.includes('offers')) {
+                    // Mucking offers: let's pretend ID 1, 4, 5 have offers
+                    match = match && [1, 4, 5].includes(r.id);
+                }
+                if (activeFilters.includes('pizza')) {
+                    match = match && (r.cuisine.toLowerCase().includes('pizza') || r.cuisine.toLowerCase().includes('italian'));
+                }
+                if (activeFilters.includes('burger')) {
+                    match = match && (r.cuisine.toLowerCase().includes('burger') || r.cuisine.toLowerCase().includes('american'));
+                }
+                if (activeFilters.includes('healthy')) {
+                    match = match && r.cuisine.toLowerCase().includes('healthy');
+                }
+
+                return match;
+            });
+
+            if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'time') {
+                filtered.sort((a, b) => parseInt(a.time) - parseInt(b.time));
+            }
+
+            document.getElementById('restCountHeader').textContent = `${filtered.length} Restaurant${filtered.length === 1 ? '' : 's'} found`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); font-size: 1.2rem; padding: 40px 0;">No restaurants found matching your filters.</p>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(r => {
+                // If ID is in our mock offers list, let's inject an offer badge
+                const hasOffer = [1, 4, 5].includes(r.id);
+                const offerHtml = hasOffer ? `<div style="position:absolute; top:12px; left:12px; background:var(--primary-color); color:white; padding:4px 12px; font-weight:800; border-radius:var(--radius-sm); font-size:0.8rem; box-shadow:var(--shadow-sm); z-index:10;">BEST OFFER</div>` : '';
+
+                html += `
+                <a href="menu.html?id=${r.id}" class="restaurant-card">
+                    <div class="rest-image">
+                        ${offerHtml}
+                        <button class="wishlist-btn" data-id="${r.id}" onclick="event.preventDefault(); wishlistSystem.toggle(${r.id})" style="position:absolute; top:12px; right:12px; background:white; border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); z-index:10; font-size:1.1rem; transition:transform 0.2s; color:var(--text-secondary);">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <img src="${r.img}?w=500&q=80" alt="${r.name}">
+                        <span class="view-menu-overlay">View Menu</span>
+                    </div>
+                    <div class="rest-details">
+                        <div class="rest-header">
+                            <h3>${r.name}</h3>
+                            <span class="rating"><i class="fa-solid fa-star"></i> ${r.rating}</span>
+                        </div>
+                        <p class="cuisines">${r.cuisine}</p>
+                        <div class="rest-meta">
+                            <span><i class="fa-solid fa-clock"></i> ${r.time}</span>
+                            <span><i class="fa-solid fa-motorcycle"></i> ${r.id % 2 === 0 ? "Free" : "₹40"}</span>
+                        </div>
+                    </div>
+                </a>
+                `;
+            });
+
+            container.innerHTML = html;
+            setTimeout(() => {
+                if (window.wishlistSystem) window.wishlistSystem.updateButtons();
+            }, 0);
+        }
+
+        function toggleFilter(btn, filterType) {
+            if (activeFilters.includes(filterType)) {
+                activeFilters = activeFilters.filter(f => f !== filterType);
+                btn.classList.remove('active');
+            } else {
+                activeFilters.push(filterType);
+                btn.classList.add('active');
+            }
+            renderRestaurants();
+        }
+                
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRestaurants();
+        });
+    </script>
+</body>
+</html>
